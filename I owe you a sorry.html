@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I owe you a sorry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Caveat:wght@600&display=swap">
+<style>
+:root{--bg:#fff0f3;--bg2:#ffdce6;--ink:#3a1240;--mute:#7d4f80;--pink:#d92a68;--on-pink:#fff;--card:#fff;--line:#f0b6cb;--gold:#ffc24d;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a0f33;--bg2:#3d1a48;--ink:#fff3ee;--mute:#d9b8d6;--pink:#ff6b9a;--on-pink:#2a0f33;--card:#4a2257;--line:#6d3a7d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2a0f33;--bg2:#3d1a48;--ink:#fff3ee;--mute:#d9b8d6;--pink:#ff6b9a;--on-pink:#2a0f33;--card:#4a2257;--line:#6d3a7d;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth;background:var(--bg)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.5 "Fredoka",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+section{max-width:520px;margin:0 auto;padding:44px 22px;text-align:center}
+h1,h2{font-weight:700;line-height:1.05;margin:0 0 12px}
+h1{font-size:clamp(4.2rem,24vw,7rem);letter-spacing:-.02em}
+h2{font-size:clamp(1.9rem,8vw,2.5rem)}
+p{margin:0 0 16px}
+.mute{color:var(--mute)}
+.note{font-family:"Caveat",cursive,"Comic Sans MS";font-size:1.6rem;color:var(--pink);line-height:1.1}
+button,.btn{font:inherit;font-weight:600;border:0;border-radius:999px;padding:14px 26px;min-height:48px;background:var(--pink);color:var(--on-pink);cursor:pointer;text-decoration:none;display:inline-block}
+button:active,.btn:active{transform:scale(.96)}
+button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}
+input[type=text]{font:inherit;width:100%;max-width:300px;padding:14px 18px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);text-align:center;margin-bottom:14px}
+.band{background:var(--bg2);max-width:none;padding:0}
+.band>div{max-width:520px;margin:0 auto;padding:44px 22px}
+.meter{height:22px;border-radius:99px;background:var(--card);box-shadow:inset 0 0 0 2px var(--line);overflow:hidden;margin:16px 0}
+.meter i{display:block;height:100%;width:0;background:var(--pink);border-radius:99px;transition:width .25s}
+.count{font-size:3rem;font-weight:700;line-height:1}
+.line{min-height:56px;color:var(--mute)}
+.opts{display:grid;gap:10px;margin:14px 0}
+.opts button{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 2px var(--line);text-align:left;border-radius:18px}
+.opts button[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--pink)}
+.verdict{min-height:84px;font-weight:600}
+.stamp{font-family:"Caveat",cursive;font-size:2rem;color:var(--pink);display:block;transform:rotate(-4deg)}
+input[type=range]{width:100%;accent-color:var(--pink);height:40px;margin:8px 0}
+.coupons{display:grid;gap:12px;margin-top:16px}
+.coupon{border:2px dashed var(--pink);background:var(--card);color:var(--ink);border-radius:18px;text-align:left;padding:14px 16px}
+.coupon b{display:block;font-size:1.05rem}
+.coupon span{display:block;color:var(--mute);font-size:.95rem}
+.coupon.on{background:var(--pink);color:var(--on-pink);border-style:solid}
+.coupon.on span{color:var(--on-pink)}
+.arena{position:relative;height:250px;margin:12px 0}
+.arena button{position:absolute}
+#yes{left:50%;top:14px;transform:translateX(-50%) scale(var(--s,1));transform-origin:top center;transition:transform .25s;z-index:2;font-size:1.3rem;padding:14px 34px}
+#no{left:calc(50% - 40px);top:150px;transition:left .18s,top .18s;white-space:nowrap}
+.date{font-size:2.3rem;font-weight:700;line-height:1.1;margin:6px 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0 22px}
+.chips button{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 2px var(--line);padding:10px 18px;min-height:44px}
+.chips button[aria-pressed=true]{background:var(--pink);color:var(--on-pink);box-shadow:none}
+.fall{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:fall 2.8s ease-in forwards}
+@keyframes fall{to{transform:translate(var(--x),110vh) rotate(360deg);opacity:.9}}
+.sad{display:inline-block;font-size:3rem;margin:4px 0 14px;cursor:pointer}
+.sad.wobble{animation:wob .5s}
+@keyframes wob{25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.fall{display:none}.sad.wobble{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<section id="gate">
+  <h1>Sorry.</h1>
+  <p class="mute">I made this whole page just to say it properly.</p>
+  <p class="note">Made just for you, Vaishu 💌</p>
+  <button id="open">Open my apology</button>
+</section>
+
+<div id="story" hidden>
+
+<section>
+  <span class="sad" id="sad" role="button" tabindex="0" aria-label="Sad face, tap it">🥺</span>
+  <h2>I’m sorry, <span class="nm"></span>.</h2>
+  <p>I messed up and I know it. You deserve a proper apology, not a lazy text. So I built you a small website. Yes, over-the-top is my love language. Like-language. Strong like-language.</p>
+  <p class="note">Tap the sad face. Go on.</p>
+</section>
+
+<div class="band"><div>
+  <h2>The Forgiveness Meter</h2>
+  <p class="mute">Every tap forgives me a little more. Tap till it’s full. I’ll wait.</p>
+  <div class="count"><span id="cnt">0</span><span class="mute" style="font-size:1.2rem"> / 20</span></div>
+  <div class="meter"><i id="bar"></i></div>
+  <p class="line" id="sline">Zero forgiveness so far. Fair, honestly.</p>
+  <button id="sorry">Forgive me a little 🤍</button>
+</div></div>
+
+
+
+
+
+<section>
+  <h2>Sorry coupons</h2>
+  <p class="mute">Valid forever. Tap to redeem.</p>
+  <div class="coupons" id="cp">
+    <button class="coupon"><b>🎤 One free rant</b><span>I listen. Phone down. No “but”.</span></button>
+    <button class="coupon"><b>🍫 Snacks on demand</b><span>Within reason. You decide the reason.</span></button>
+    <button class="coupon"><b>🎬 You pick the movie</b><span>No complaints. Even if it’s three hours long.</span></button>
+    <button class="coupon"><b>😌 One “you were right”</b><span>Said out loud. Maybe even recorded.</span></button>
+  </div>
+</section>
+
+<section id="fgv">
+  <h2>Please forgive me 🥺</h2>
+  <p>I’m really sorry, <span class="nm"></span>. I never want to be the reason you’re upset. You matter to me, and I’d much rather fix this than win any argument.</p>
+  <p class="note">So… can you forgive me?</p>
+  <div style="display:flex;flex-direction:column;gap:12px;align-items:center">
+    <button id="fgy">I forgive you 🤍</button>
+    <button class="ghost" id="fgn">Still thinking…</button>
+  </div>
+  <p class="verdict" id="fgr" style="margin-top:16px"></p>
+</section>
+
+<div class="band"><div id="askbox">
+  <p class="note">Okay. Now the real reason I’m here.</p>
+  <h2 id="q">Will you go on a date with me?</h2>
+  <p class="date">Friday, 6th November</p>
+  <p class="mute">You, me, good food or chai, and me trying to be funny. I really like you, you know.</p>
+  <div class="arena" id="arena">
+    <button id="yes">Yes 💖</button>
+    <button id="no" class="ghost">No</button>
+  </div>
+  <p class="mute" id="hint">(Pick wisely.)</p>
+</div>
+
+<div id="done" hidden>
+  <h2>She said YES! 🎉</h2>
+  <p class="date">Friday, 6th Nov. It’s a date.</p>
+  <p class="mute">Best news I’ll get this year. Pick a vibe and tell me.</p>
+  <div class="chips" id="vibes">
+    <button aria-pressed="false">Dinner 🍝</button>
+    <button aria-pressed="false">Chai and chats ☕</button>
+    <button aria-pressed="false">Walk + ice cream 🍦</button>
+    <button aria-pressed="true">Surprise me ✨</button>
+  </div>
+  <a class="btn" id="mail" href="#">Tell him you said yes 💌</a>
+  <p class="mute" style="margin-top:16px;font-size:.95rem">Tap the button and your mail app opens with the message ready. Just press send.</p>
+  <button class="ghost" id="share" hidden>Or send it another way</button>
+</div></div>
+
+</div>
+
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+var name="Vaishu",sorries=0,vibe="Surprise me ✨",accepted=false;
+var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function confetti(n){
+  if(reduce)return;
+  var e=["💖","✨","🌸","💌","🎉","🍫"];
+  for(var i=0;i<n;i++){
+    var s=document.createElement("span");
+    s.className="fall";
+    s.textContent=e[i%e.length];
+    s.style.left=Math.random()*100+"vw";
+    s.style.setProperty("--x",(Math.random()*120-60)+"px");
+    s.style.animationDelay=(Math.random()*.8)+"s";
+    document.body.appendChild(s);
+    (function(x){setTimeout(function(){x.remove()},4000)})(s);
+  }
+}
+
+$("#open").onclick=function(){
+  document.querySelectorAll(".nm").forEach(function(x){x.textContent=name});
+  $("#gate").hidden=true;
+  $("#story").hidden=false;
+  window.scrollTo(0,0);
+  confetti(14);
+};
+
+
+var sad=$("#sad"),faces=["🥺","😢","😭","🥹","😔"],fi=0;
+function sadTap(){
+  fi=(fi+1)%faces.length;sad.textContent=faces[fi];
+  sad.classList.remove("wobble");void sad.offsetWidth;sad.classList.add("wobble");
+}
+sad.onclick=sadTap;
+sad.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();sadTap()}};
+
+var sl={1:"That’s one. Thank you. I’ll take it. 🥹",4:"Four! I’m so sorry, and also doing a happy dance.",8:"Almost halfway. Still sorry, by the way.",12:"Look at that. I’m getting forgiven by the kilo.",16:"Four more. I’m so sorry, and so grateful.",20:"Full! Forgiven. Thank you, Vaishu. 🏆"};
+$("#sorry").onclick=function(){
+  if(sorries>=20)return;
+  sorries++;
+  $("#cnt").textContent=sorries;
+  $("#bar").style.width=(sorries*5)+"%";
+  if(sl[sorries])$("#sline").textContent=sl[sorries];
+  if(sorries===20){confetti(30);$("#sorry").textContent="Forgiven ✅"}
+};
+
+
+
+
+
+var cm=["🎤 Redeemed. I’m listening.","🍫 Redeemed. Order away.","🎬 Redeemed. Remote is yours.","😌 Redeemed. “You were right.” (There. Said it.)"];
+document.querySelectorAll("#cp .coupon").forEach(function(b,i){
+  b.onclick=function(){
+    if(b.classList.contains("on"))return;
+    b.classList.add("on");
+    b.querySelector("span").textContent=cm[i].slice(3);
+    confetti(6);
+  };
+});
+
+var forgiven=false,thk=0;
+var tm=["I’ll wait. Forever. With snacks. 🍫","I’ll keep apologising until you give in. I have stamina.","Last try. Puppy eyes: 🥺🥺🥺"];
+function forgive(){
+  if(forgiven)return;
+  forgiven=true;
+  $("#fgr").textContent="Thank you, "+name+". Truly. That means a lot to me. 🥹";
+  $("#fgn").hidden=true;
+  $("#fgy").textContent="Forgiven 🤍";
+  confetti(30);
+  setTimeout(function(){$("#askbox").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})},1800);
+}
+$("#fgy").onclick=forgive;
+$("#fgn").onclick=function(){
+  if(thk<tm.length){
+    $("#fgr").textContent=tm[thk++];
+    if(thk===tm.length)$("#fgn").textContent="Okay, fine, I forgive you";
+  }else forgive();
+};
+
+var no=$("#no"),yes=$("#yes"),arena=$("#arena"),tries=0;
+var nt=["No","Are you sure?","Think again 🥺","This button is shy","Nice try","It’s a trap","No has left the chat","Fine. Only Yes is left."];
+var hints=["(Pick wisely.)","(The No button seems nervous.)","(Yes is getting bigger. Just saying.)","(I can do this all day.)","(You can’t catch it. Nobody can.)","(Okay, even I’m impressed.)","(One more try and it gives up.)","(See? Destiny.)"];
+function evade(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  if(tries>=7){yesNow();return}
+  tries++;
+  no.textContent=nt[tries];
+  $("#hint").textContent=hints[tries];
+  var maxL=arena.clientWidth-no.offsetWidth;
+  no.style.left=Math.max(0,Math.random()*maxL)+"px";
+  no.style.top=(130+Math.random()*(arena.clientHeight-130-no.offsetHeight))+"px";
+  yes.style.setProperty("--s",Math.min(1.6,1+tries*.1));
+  if(tries>=7){no.classList.remove("ghost");no.textContent="Fine, Yes"}
+}
+no.addEventListener("pointerdown",evade);
+no.addEventListener("mouseover",function(e){if(tries<7)evade(e)});
+no.addEventListener("click",evade);
+
+function mailLink(){
+  var body=name+" said YES 🎉\nDate: Friday, 6th Nov\nVibe: "+vibe+"\nForgave me: "+(forgiven?"yes 🥹":"still working on it")+"\nForgiveness taps: "+sorries+"\nShe has also redeemed all her coupons, probably.";
+  return "mailto:chavananiket38@gmail.com?subject="+encodeURIComponent("She said YES 🎉")+"&body="+encodeURIComponent(body);
+}
+function yesNow(){
+  if(accepted)return;
+  accepted=true;
+  $("#askbox").hidden=true;
+  $("#done").hidden=false;
+  $("#mail").href=mailLink();
+  if(navigator.share)$("#share").hidden=false;
+  confetti(40);
+  window.scrollTo(0,document.body.scrollHeight);
+}
+yes.onclick=yesNow;
+
+document.querySelectorAll("#vibes button").forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll("#vibes button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
+    vibe=b.textContent;
+    $("#mail").href=mailLink();
+  };
+});
+$("#share").onclick=function(){
+  try{navigator.share({title:"She said YES 🎉",text:name+" said YES to the date on Friday, 6th Nov! Vibe: "+vibe})}catch(e){}
+};
+})();
+</script>
+</body>
+</html>
